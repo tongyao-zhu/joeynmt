@@ -1,0 +1,75 @@
+name: "sign_text_experiment"
+
+data:
+    src: "gloss"
+    trg: "de"
+    train: "test/data/sign/phoenix2014T.train"
+    dev: "test/data/sign/phoenix2014T.dev"
+    test: "test/data/sign/phoenix2014T.test"
+    level: "word"
+    lowercase: False
+    max_sent_length: 100
+    src_voc_min_freq: 0
+    trg_voc_min_freq: 0
+    #src_vocab: "reverse_model/src_vocab.txt"
+    #trg_vocab: "reverse_model/trg_vocab.txt"
+
+testing:
+    beam_size: 3
+    alpha: 1.0
+
+training:
+    random_seed: 42
+    optimizer: "adam"
+    learning_rate: 0.001
+    learning_rate_min: 0.0002
+    weight_decay: 0.0
+    clip_grad_norm: 1.0
+    batch_size: 10
+    batch_type: "sentence"
+    scheduling: "plateau"
+    patience: 8
+    decrease_factor: 0.7
+    early_stopping_metric: "eval_metric"
+    epochs: 30
+    validation_freq: 1000
+    logging_freq: 100
+    eval_metric: "bleu"
+    model_dir: "gloss_text"
+    overwrite: True
+    shuffle: True
+    use_cuda: False
+    max_output_length: 30
+    print_valid_sents: [0, 3, 6]
+    keep_last_ckpts: 2
+
+model:
+    initializer: "xavier"           # initializer for all trainable weights (xavier, zeros, normal, uniform)
+    init_gain: 1.0                  # gain for Xavier initializer (default: 1.0)
+    bias_initializer: "zeros"       # initializer for bias terms (xavier, zeros, normal, uniform)
+    embed_initializer: "xavier"     # initializer for embeddings (xavier, zeros, normal, uniform)
+    embed_init_gain: 1.0            # gain for Xavier initializer for embeddings (default: 1.0)
+    tied_embeddings: False          # tie src and trg embeddings, only applicable if vocabularies are the same, default: False
+    tied_softmax: True
+    encoder:
+        type: "transformer"
+        num_layers: 3
+        num_heads: 8
+        embeddings:
+            embedding_dim: 512
+            scale: True
+        # typically ff_size = 4 x hidden_size
+        hidden_size: 512
+        ff_size: 2048
+        dropout: 0.1
+    decoder:
+        type: "transformer"
+        num_layers: 3
+        num_heads: 8
+        embeddings:
+            embedding_dim: 512
+            scale: True
+        # typically ff_size = 4 x hidden_size
+        hidden_size: 512
+        ff_size: 2048
+        dropout: 0.1
