@@ -32,8 +32,8 @@ class Embeddings(nn.Module):
         self.embedding_dim = embedding_dim
         self.scale = scale
         self.vocab_size = vocab_size
-        self.lut = nn.Embedding(vocab_size, self.embedding_dim,
-                                padding_idx=padding_idx)
+        weight = torch.load("complete_features_tensor.pt")
+        self.lut = nn.Embedding.from_pretrained(weight)
 
         if freeze:
             freeze_params(self)
