@@ -68,9 +68,9 @@ model:
         num_layers: 3
         num_heads: 8
         embeddings:
-            embedding_dim: 512
+            embedding_dim: 1024
             scale: True
         # typically ff_size = 4 x hidden_size
-        hidden_size: 512
+        hidden_size: 1024
         ff_size: 4048
         dropout: 0.1
