@@ -1,7 +1,7 @@
 import math
 from torch import nn, Tensor
 from joeynmt.helpers import freeze_params
-
+import torch
 
 class Embeddings(nn.Module):
 
