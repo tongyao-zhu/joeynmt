@@ -3,15 +3,15 @@ name: "sign_text_experiment"
 data:
     src: "sign"
     trg: "de"
-    train: "sign_text_data/sign_text_corpus_num/phoenix2014T.train"
-    dev: "sign_text_data/sign_text_corpus_num/phoenix2014T.dev"
-    test: "sign_text_data/sign_text_corpus_num/phoenix2014T.test"
+    train: "sign_text_data/sign_text_corpus_test/phoenix2014T.train"
+    dev: "sign_text_data/sign_text_corpus_test/phoenix2014T.dev"
+    test: "sign_text_data/sign_text_corpus_test/phoenix2014T.test"
     level: "word"
     lowercase: False
     max_sent_length: 100
     src_voc_min_freq: 0
     trg_voc_min_freq: 0
-    src_vocab: "sign_text_data/sign_image_vocab_num.txt"
+    src_vocab: "sign_text_data/sign_image_vocab_test.txt"
     #trg_vocab: "reverse_model/trg_vocab.txt"
 
 testing:
@@ -38,7 +38,7 @@ training:
     model_dir: "sign_text_real"
     overwrite: True
     shuffle: True
-    use_cuda: True
+    use_cuda: False
     max_output_length: 40
     print_valid_sents: [0]
     keep_last_ckpts: 2
@@ -50,7 +50,7 @@ model:
     embed_initializer: "xavier"     # initializer for embeddings (xavier, zeros, normal, uniform)
     embed_init_gain: 1.0            # gain for Xavier initializer for embeddings (default: 1.0)
     tied_embeddings: False          # tie src and trg embeddings, only applicable if vocabularies are the same, default: False
-    tied_softmax: True
+    tied_softmax: False
     encoder:
         type: "transformer"
         num_layers: 3
@@ -68,9 +68,9 @@ model:
         num_layers: 3
         num_heads: 8
         embeddings:
-            embedding_dim: 512
+            embedding_dim: 1024
             scale: True
         # typically ff_size = 4 x hidden_size
-        hidden_size: 512
+        hidden_size: 1024
         ff_size: 4048
         dropout: 0.1
