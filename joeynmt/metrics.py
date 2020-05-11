@@ -4,6 +4,7 @@ This module holds various MT evaluation metrics.
 """
 
 import sacrebleu
+from nltk.translate.bleu_score import corpus_bleu
 
 
 def chrf(hypotheses, references):
@@ -27,6 +28,20 @@ def bleu(hypotheses, references):
     """
     return sacrebleu.raw_corpus_bleu(sys_stream=hypotheses,
                                      ref_streams=[references]).score
+
+def bleu_ngram(hypotheses, references, max_order=4):
+    """
+    First order bleu score using nltk
+    :param hypotheses: list of hypotheses (strings)
+    :param references: list of references (strings)
+    :param max_order: the max-order of hypotheses
+    :return:
+    """
+    references = [[x.split(" ")] for x in references]
+    candidates = [x.split(" ") for x in hypotheses]
+    weights = tuple([1/max_order]*max_order + [0]*(4 - max_order))
+    score = corpus_bleu(references, candidates, weights=weights)
+    return score
 
 
 def token_accuracy(hypotheses, references, level="word"):
