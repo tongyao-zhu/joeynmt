@@ -13,7 +13,7 @@ from torchtext.data import Dataset, Field
 
 from joeynmt.helpers import bpe_postprocess, load_config, make_logger,\
     get_latest_checkpoint, load_checkpoint, store_attention_plots
-from joeynmt.metrics import bleu, chrf, token_accuracy, sequence_accuracy
+from joeynmt.metrics import bleu, chrf, token_accuracy, sequence_accuracy, bleu_ngram
 from joeynmt.model import build_model, Model
 from joeynmt.batch import Batch
 from joeynmt.data import load_data, make_data_iter, MonoDataset
@@ -147,7 +147,8 @@ def validate_on_data(model: Model, data: Dataset,
             current_valid_score = 0
             if eval_metric.lower() == 'bleu':
                 # this version does not use any tokenization
-                current_valid_score = bleu(valid_hypotheses, valid_references)
+                # current_valid_score = bleu(valid_hypotheses, valid_references)
+                current_valid_score = bleu_ngram(valid_hypotheses, valid_references)
             elif eval_metric.lower() == 'chrf':
                 current_valid_score = chrf(valid_hypotheses, valid_references)
             elif eval_metric.lower() == 'token_accuracy':
