@@ -16,6 +16,8 @@ class Embeddings(nn.Module):
                  vocab_size: int = 0,
                  padding_idx: int = 1,
                  freeze: bool = False,
+                 from_pretrained: bool = False,
+                 pretrained_path: str = "",
                  **kwargs):
         """
         Create new embeddings for the vocabulary.
@@ -32,9 +34,14 @@ class Embeddings(nn.Module):
         self.embedding_dim = embedding_dim
         self.scale = scale
         self.vocab_size = vocab_size
-        weight = torch.load("complete_features_tensor.pt")
-        self.lut = nn.Embedding.from_pretrained(weight)
-
+        if from_pretrained:
+            print("using pretrained model")
+            weight = torch.load(pretrained_path)
+            print(f"loaded embeddings size {weight.shape}")
+            self.lut = nn.Embedding.from_pretrained(weight)
+        else:
+            self.lut = nn.Embedding(vocab_size, self.embedding_dim,
+                                    padding_idx=padding_idx)
         if freeze:
             freeze_params(self)
 
