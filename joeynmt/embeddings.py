@@ -32,7 +32,7 @@ class Embeddings(nn.Module):
         self.embedding_dim = embedding_dim
         self.scale = scale
         self.vocab_size = vocab_size
-        weight = torch.load("complete_features_tensor.pt")
+        weight = torch.load("/diskC/tongyao/joeynmt/joeynmt/complete_features_tensor_1024_dimension.pt")
         self.lut = nn.Embedding.from_pretrained(weight)
 
         if freeze:
