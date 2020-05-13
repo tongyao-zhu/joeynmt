@@ -71,6 +71,7 @@ class Vocabulary:
             new_index = len(self.itos)
             self.itos.append(t)
             self.stoi[t] = new_index
+        print(list(self.stoi.items())[:100])
         assert len(self.stoi) == len(self.itos)
 
     def _from_file(self, file: str) -> None:
