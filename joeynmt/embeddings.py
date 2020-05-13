@@ -34,6 +34,7 @@ class Embeddings(nn.Module):
         self.embedding_dim = embedding_dim
         self.scale = scale
         self.vocab_size = vocab_size
+        self.from_pretrained = from_pretrained
         if from_pretrained:
             print("using pretrained model")
             weight = torch.load(pretrained_path)
