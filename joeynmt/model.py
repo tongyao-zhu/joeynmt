@@ -45,6 +45,9 @@ class Model(nn.Module):
         super(Model, self).__init__()
 
         self.src_embed = src_embed
+        self.src_linear = nn.Linear(1024,512)
+        self.src_batch_norm = nn.BatchNorm1D(512)
+        self.src_relu = nn.ReLU()
         self.trg_embed = trg_embed
         self.encoder = encoder
         self.decoder = decoder
@@ -89,7 +92,14 @@ class Model(nn.Module):
         :param src_mask:
         :return: encoder outputs (output, hidden_concat)
         """
-        return self.encoder(self.src_embed(src), src_length, src_mask)
+        # print(f"in encode step, current input has shape {src.shape}")
+        src = self.src_embed(src)
+        # print(f"after embedding, it has shape {src.shape}")
+
+        src = self.src_linear(src.float())
+        # print(f"after linear, it has shape {src.shape}")
+
+        return self.encoder(src, src_length, src_mask)
 
     def decode(self, encoder_output: Tensor, encoder_hidden: Tensor,
                src_mask: Tensor, trg_input: Tensor,
@@ -238,7 +248,7 @@ def build_model(cfg: dict = None,
                "for transformer, emb_size must be hidden_size"
 
         encoder = TransformerEncoder(**cfg["encoder"],
-                                     emb_size=src_embed.embedding_dim,
+                                     emb_size= src_embed.embedding_dim,
                                      emb_dropout=enc_emb_dropout)
     else:
         encoder = RecurrentEncoder(**cfg["encoder"],
