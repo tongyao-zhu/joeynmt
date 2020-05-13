@@ -54,6 +54,7 @@ class Embeddings(nn.Module):
         :return: embedded representation for `x`
         """
         if 0 in x:
+            print(f"input tensor is {x}")
             print("Found unknown token!")
             assert (1==0)
         if self.scale:
