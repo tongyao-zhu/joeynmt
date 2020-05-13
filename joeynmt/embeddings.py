@@ -53,6 +53,9 @@ class Embeddings(nn.Module):
         :param x: index in the vocabulary
         :return: embedded representation for `x`
         """
+        if 0 in x:
+            print("Found unknown token!")
+            assert (1==0)
         if self.scale:
             return self.lut(x) * math.sqrt(self.embedding_dim)
         return self.lut(x)
