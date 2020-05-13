@@ -53,7 +53,8 @@ class Embeddings(nn.Module):
         :param x: index in the vocabulary
         :return: embedded representation for `x`
         """
-        if 0 in x:
+        # print(f"normally, input tensor is {x}")
+        if 0 in x and self.from_pretrained:
             print(f"input tensor is {x}")
             print("Found unknown token!")
             assert (1==0)
