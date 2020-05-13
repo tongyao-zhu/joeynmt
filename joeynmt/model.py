@@ -46,7 +46,7 @@ class Model(nn.Module):
 
         self.src_embed = src_embed
         self.src_linear = nn.Linear(1024,512)
-        self.src_batch_norm = nn.BatchNorm1D(512)
+        self.src_batch_norm = nn.BatchNorm1d(512)
         self.src_relu = nn.ReLU()
         self.trg_embed = trg_embed
         self.encoder = encoder
