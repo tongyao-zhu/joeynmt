@@ -46,7 +46,7 @@ class Model(nn.Module):
 
         self.src_embed = src_embed
         self.src_linear = nn.Linear(1024,512)
-        self.src_batch_norm = nn.BatchNorm1d(512)
+        self.src_batch_norm = nn.BatchNorm1d(1024)
         self.src_relu = nn.ReLU()
         self.trg_embed = trg_embed
         self.encoder = encoder
@@ -94,10 +94,15 @@ class Model(nn.Module):
         """
         # print(f"in encode step, current input has shape {src.shape}")
         src = self.src_embed(src)
-        # print(f"after embedding, it has shape {src.shape}")
-
+        print(f"after embedding, it has shape {src.shape}")
+        src=src.permute([0,2,1])
+        src = self.src_batch_norm(src)
+        src=src.permute([0,2,1])
+        print(f"after batch norm , it has hsape{src.shape}")
         src = self.src_linear(src.float())
-        # print(f"after linear, it has shape {src.shape}")
+
+        src = self.src_relu(src)
+        print(f"after linear, it has shape {src.shape}")
 
         return self.encoder(src, src_length, src_mask)
 
