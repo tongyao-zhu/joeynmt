@@ -50,6 +50,29 @@ class Vocabulary:
         self.add_tokens(tokens=self.specials+tokens)
         assert len(self.stoi) == len(self.itos)
 
+    def _from_list_new(self, tokens: List[str] = None) -> None:
+        """
+        Make vocabulary from list of tokens.
+        Tokens are assumed to be unique and pre-selected.
+        Special symbols are added if not in list.
+        No checking for duplicate entries. The list should be a list
+        of unique tokens
+
+        :param tokens: list of tokens
+        """
+        for token in self.specials[::-1]:
+            if token not in tokens:
+                print("added token {}".format(token))
+                tokens = [token] + tokens
+        print(tokens[:10])
+        assert len(set(tokens)) == len(tokens)
+        print(f"using the new from_list function, in total {len(tokens)}")
+        for t in tokens:
+            new_index = len(self.itos)
+            self.itos.append(t)
+            self.stoi[t] = new_index
+        assert len(self.stoi) == len(self.itos)
+
     def _from_file(self, file: str) -> None:
         """
         Make vocabulary from contents of file.
@@ -61,7 +84,7 @@ class Vocabulary:
         with open(file, "r") as open_file:
             for line in open_file:
                 tokens.append(line.strip("\n"))
-        self._from_list(tokens)
+        self._from_list_new(tokens)
 
     def __str__(self) -> str:
         return self.stoi.__str__()
@@ -152,6 +175,7 @@ def build_vocab(field: str, max_size: int, min_freq: int, dataset: Dataset,
 
     if vocab_file is not None:
         # load it from file
+        print('load from file')
         vocab = Vocabulary(file=vocab_file)
     else:
         # create newly
