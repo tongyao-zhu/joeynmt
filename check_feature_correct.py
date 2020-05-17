@@ -20,7 +20,7 @@ for i in range(0,95):
     current_tensor = torch.load("./../feature_tensors/feature_tensor_{}".format(i))
     tensor_list.append(current_tensor)
 
-concat_tensor = torch.concat(tensor_list)
+concat_tensor = torch.cat(tensor_list)
 print("concatenated tensor has shape {}".format(concat_tensor.shape))
 
 print("loading total features")
