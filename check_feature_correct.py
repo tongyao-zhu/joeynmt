@@ -17,7 +17,7 @@ tensor_list = []
 
 for i in range(0,95):
     print(f"Reading Current tensor {i}")
-    current_tensor = torch.load("../feature_tensors/feature_tensor_{}.pt".format(i))
+    current_tensor = torch.load("./feature_tensors/feature_tensor_{}.pt".format(i))
     tensor_list.append(current_tensor)
 
 concat_tensor = torch.concat(tensor_list)
