@@ -25,7 +25,7 @@ print("concatenated tensor has shape {}".format(concat_tensor.shape))
 
 print("loading total features")
 
-total_features = torch.load("./feature_tensor.pt")
+total_features = torch.load("./features_tensor.pt")
 
 print("total features has shape {}".format(total_features.shape))
 
