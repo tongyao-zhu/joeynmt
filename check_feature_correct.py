@@ -25,35 +25,36 @@ import random
 # In[2]:
 
 
-# Part 1: check whether individiually generated features are the same as combined
+# # Part 1: check whether individiually generated features are the same as combined
 
-tensor_list = []
+# tensor_list = []
 
-for i in range(0,95):
-    print(f"Reading Current tensor {i}")
-    current_tensor = torch.load("./../feature_tensors/feature_tensor_{}".format(i))
-    tensor_list.append(current_tensor)
+# for i in range(0,95):
+#     print(f"Reading Current tensor {i}")
+#     current_tensor = torch.load("./../feature_tensors/feature_tensor_{}".format(i))
+#     tensor_list.append(current_tensor)
 
-concat_tensor = torch.cat(tensor_list)
-print("concatenated tensor has shape {}".format(concat_tensor.shape))
+# concat_tensor = torch.cat(tensor_list)
+# print("concatenated tensor has shape {}".format(concat_tensor.shape))
 
-print("loading total features")
+# print("loading total features")
 
-total_features = torch.load("./features_tensor.pt")
+# total_features = torch.load("./features_tensor.pt")
 
-print("total features has shape {}".format(total_features.shape))
-
-
-# In[ ]:
+# print("total features has shape {}".format(total_features.shape))
 
 
-print("total features equal to concatenated features {}".format((total_features == concat_tensor).all()))
+# # In[ ]:
+
+
+# print("total features equal to concatenated features {}".format((total_features == concat_tensor).all()))
 
 
 # In[ ]:
 
 
 # Check correctness of generated images
+total_features = torch.load("./features_tensor.pt")
 
 
 # In[ ]:
