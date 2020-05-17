@@ -33,7 +33,7 @@ print("total features has shape {}".format(total_features.shape))
 # In[ ]:
 
 
-print("total features equal to concatenated features {}".format((total_features == concatenated_features).all()))
+print("total features equal to concatenated features {}".format((total_features == concat_tensor).all()))
 
 
 # In[ ]:
