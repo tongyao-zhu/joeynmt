@@ -84,7 +84,7 @@ for index in range(len(random_indices)):
     real_tensor = image_tensors[index]
     acc_index = random_indices[index]
     larger_index = acc_index//10000
-    features_tensor = torch.load("./image_tensors/image_tensor_{}.pt".format(larger_index))
+    features_tensor = torch.load("./../image_tensors/image_tensor_{}.pt".format(larger_index))
     offset = acc_index  - larger_index//10000
     assert (features_tensor==real_tensor).all()
 
