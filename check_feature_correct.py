@@ -22,54 +22,13 @@ import torch
 import os
 import random
 
-# In[2]:
-
-
-# # Part 1: check whether individiually generated features are the same as combined
-
-# tensor_list = []
-
-# for i in range(0,95):
-#     print(f"Reading Current tensor {i}")
-#     current_tensor = torch.load("./../feature_tensors/feature_tensor_{}".format(i))
-#     tensor_list.append(current_tensor)
-
-# concat_tensor = torch.cat(tensor_list)
-# print("concatenated tensor has shape {}".format(concat_tensor.shape))
-
-# print("loading total features")
-
-# total_features = torch.load("./features_tensor.pt")
-
-# print("total features has shape {}".format(total_features.shape))
-
-
-# # In[ ]:
-
-
-# print("total features equal to concatenated features {}".format((total_features == concat_tensor).all()))
-
-
-# In[ ]:
-
 
 # Check correctness of generated images
 total_features = torch.load("./features_tensor.pt")
 
 
-# In[ ]:
-
-
 random_size = 100
 
-
-# In[ ]:
-
-
-os.getcwd()
-
-
-# In[ ]:
 
 
 with open("./sign_text_data/images_name_list.txt", "r") as f:
@@ -82,15 +41,6 @@ with open("./sign_text_data/images_name_list.txt", "r") as f:
 image_names = list(map(lambda x:x.strip("\n").strip(), image_names))
 
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
 random_names = []
 random_indices = []
 while len(random_names) < random_size:
@@ -101,13 +51,7 @@ while len(random_names) < random_size:
 print("random names {}".format(random_names[:20]))
 
 
-# In[ ]:
-
-
 random_names = list(map(lambda x:"./." + x, random_names))
-
-
-# In[ ]:
 
 
 def get_image_tensor(images_list):
@@ -130,32 +74,27 @@ def get_image_tensor(images_list):
     return input_batch
 
 
-# In[ ]:
 
+image_tensors = get_image_tensor(random_names)
 
-input_batch = get_image_tensor(random_names)
-
-
-# In[ ]:
 
 
 model = GoogLeNet.from_pretrained('googlenet')
+real_features = model.extract_features(image_tensors)
+print(f"finished generating real features, has shape {real_features.shape}")
 
+for index in range(len(random_indices)):
+    print(f"currently  checking index {random_indices[index]}")
+    real_tensor = image_tensors[index]
+    acc_index = random_indices[index]
+    larger_index = acc_index//10000
+    # print(f"current larger index{larger_index}")
+    saved_image_tensors = torch.load(f"./../image_tensors/image_tensor_{larger_index}.pt")
+    offset = acc_index%10000
+    assert (saved_image_tensors[offset]==real_tensor).all()
+ 	print("passed check of saved image")
 
-# In[ ]:
-
-
-extracted_featuers = model.extract_features(input_batch)
-
-
-# In[ ]:
-
-
-print("extracted features has shape {}".format(extracted_featuers.shape))
-
-
-# In[ ]:
-
-
-print("extracted features same as samved features {}".format(extracted_featuers == total_features[random_indices]))
-
+ 	real_feature = real_features[index]
+ 	saved_feature = total_features[acc_index]
+ 	assert (real_feature == saved_feature).all()
+ 	print("passed check of saved feature")
