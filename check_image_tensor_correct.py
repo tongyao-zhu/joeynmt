@@ -52,8 +52,8 @@ image_names = list(map(lambda x:x.strip("\n").strip(), image_names))
 
 
 
-random_names = []
-random_indices = []
+random_names = [image_names[0],]
+random_indices = [0]
 while len(random_names) < random_size:
     random_index = random.randint(0, len(image_names)-1)
     if random_index not in random_indices:
@@ -84,7 +84,8 @@ for index in range(len(random_indices)):
     real_tensor = image_tensors[index]
     acc_index = random_indices[index]
     larger_index = acc_index//10000
-    features_tensor = torch.load("./../image_tensors/image_tensor_{}.pt".format(larger_index))
-    offset = acc_index  - larger_index//10000
-    assert (features_tensor==real_tensor).all()
+    print(f"current larger index{larger_index}")
+    features_tensor = torch.load(f"./../image_tensors/image_tensor_{larger_index}.pt")
+    offset = acc_index%10000
+    assert (features_tensor[offset]==real_tensor).all()
 
