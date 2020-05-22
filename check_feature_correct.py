@@ -27,7 +27,7 @@ import random
 total_features = torch.load("./features_tensor.pt")
 
 
-random_size = 100
+random_size = 1000
 
 
 
@@ -41,8 +41,8 @@ with open("./sign_text_data/images_name_list.txt", "r") as f:
 image_names = list(map(lambda x:x.strip("\n").strip(), image_names))
 
 
-random_names = []
-random_indices = []
+random_names = [image_names[0]]
+random_indices = [0]
 while len(random_names) < random_size:
     random_index = random.randint(0, len(image_names)-1)
     if random_index not in random_indices:
@@ -61,8 +61,8 @@ def get_image_tensor(images_list):
         input_image = Image.open(input_image)
         # Preprocess image
         preprocess = transforms.Compose([
-          transforms.Resize(256),
-          transforms.CenterCrop(224),
+          transforms.Resize((224,224)),
+         #  transforms.CenterCrop(224),
           transforms.ToTensor(),
           transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         ])
@@ -78,23 +78,28 @@ def get_image_tensor(images_list):
 image_tensors = get_image_tensor(random_names)
 
 
-
+print(f"first of images tensor is {image_tensors[0]}")
 model = GoogLeNet.from_pretrained('googlenet')
+model.eval()
 real_features = model.extract_features(image_tensors)
 print(f"finished generating real features, has shape {real_features.shape}")
 
 for index in range(len(random_indices)):
     print(f"currently  checking index {random_indices[index]}")
-    real_tensor = image_tensors[index]
+   # real_tensor = image_tensors[index]
     acc_index = random_indices[index]
     larger_index = acc_index//10000
     # print(f"current larger index{larger_index}")
-    saved_image_tensors = torch.load(f"./../image_tensors/image_tensor_{larger_index}.pt")
+   # saved_image_tensors = torch.load(f"./../image_tensors/image_tensor_{larger_index}.pt")
     offset = acc_index%10000
-    assert (saved_image_tensors[offset]==real_tensor).all()
- 	print("passed check of saved image")
-
- 	real_feature = real_features[index]
- 	saved_feature = total_features[acc_index]
- 	assert (real_feature == saved_feature).all()
- 	print("passed check of saved feature")
+   
+  # assert (saved_image_tensors[offset]==real_tensor).all()
+   # print("passed check of saved image")
+    real_feature = real_features[index]
+    print(f"real feature is {real_feature} has shape {real_feature.shape}")
+    batch_features = torch.load(f"./../feature_tensors_v2/feature_tensor_{larger_index:03}")
+    print(f"loaded feature from batch {larger_index}")
+    print(f"batch feature is {batch_features[0]} has shape {batch_features[0].shape}")
+   # saved_feature = total_features[acc_index]
+    assert (real_feature == batch_features[offset]).all()
+    print("passed check of saved feature")
