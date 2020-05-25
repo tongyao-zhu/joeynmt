@@ -100,7 +100,7 @@ class Model(nn.Module):
         src=src.permute([0,2,1])
         src = self.src_relu(src)
         # print(f"after batch norm , it has hsape{src.shape}")
-        src = self.src_linear(src.float())
+        # src = self.src_linear(src.float())
         # print(f"after linear, it has shape {src.shape}")
 
         return self.encoder(src, src_length, src_mask)
