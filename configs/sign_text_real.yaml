@@ -58,10 +58,10 @@ model:
         num_heads: 8
         embeddings:
             embedding_dim: 512
-            scale: True
+            scale: False
             freeze: True
             from_pretrained: True
-            pretrained_path: "/diskC/tongyao/joeynmt/complete_feature_tensor_normal.pt"
+            pretrained_path: "/diskC/tongyao/joeynmt/resnet_feature_tensor.pt"
         # typically ff_size = 4 x hidden_size
         hidden_size: 512
         ff_size: 4048
