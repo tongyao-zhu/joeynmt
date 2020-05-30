@@ -59,6 +59,14 @@ class Embeddings(nn.Module):
             print(f"input tensor is {x}")
             print("Found unknown token!")
             assert (1==0)
+        if 2 in x and self.from_pretrained:
+            print(f"Found BOF!, input tensor is {x}")
+            assert (1==0)
+        if 3 in x and self.from_pretrained:
+            print(f"Found EOF!, input tensor is {x}")
+            assert (1==0)
+        if 1 in x:
+            print(f"Found padding in sentence {x}")
         if self.scale:
             return self.lut(x) * math.sqrt(self.embedding_dim)
         return self.lut(x)
