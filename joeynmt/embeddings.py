@@ -37,9 +37,9 @@ class Embeddings(nn.Module):
         self.from_pretrained = from_pretrained
         if from_pretrained:
             print("using pretrained model")
-            weight = torch.load(pretrained_path)
-            print(f"loaded embeddings size {weight.shape}")
-            self.lut = nn.Embedding.from_pretrained(weight)
+            self.weight = torch.load(pretrained_path)
+            print(f"loaded embeddings size {self.weight.shape}")
+            self.lut = nn.Embedding.from_pretrained(self.weight)
         else:
             self.lut = nn.Embedding(vocab_size, self.embedding_dim,
                                     padding_idx=padding_idx)
@@ -67,6 +67,10 @@ class Embeddings(nn.Module):
             assert (1==0)
         # if 1 in x and self.from_pretrained:
         #     print(f"Found padding in sentence {x}")
+        returned_value = self.lut(x)
+        indices = [int(y)+4 for y in x]
+        real_value = (self.weight)[indices]
+        assert (returned_value==real_value).all()
         if self.scale:
             return self.lut(x) * math.sqrt(self.embedding_dim)
         return self.lut(x)
