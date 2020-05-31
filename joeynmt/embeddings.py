@@ -69,20 +69,21 @@ class Embeddings(nn.Module):
         #     print(f"Found padding in sentence {x}")
         if self.from_pretrained:
             print("Using pretrained")
-        returned_value = self.lut(x)
-        print(f"Normal, x is {x}, has shape {x.shape}")
- #       indices = [int(y) + 4 for y in x]
-        indices = [int(y) for y in x[0]]
         
-        real_value = (self.weight)[indices]
-        print(f"real value has shape {real_value.shape}, is {real_value}")
-        print(f"returned_value[0] has shape {returned_value[0].shape}, is {returned_value[0]}")
-        actual_index = []
-        for index in range(len(returned_value[0])):
-            real = torch.all(returned_value[0][index].cpu() == self.weight.cpu(), dim=1).nonzero().item()
-            actual_index.append(real)
-        print(f"the returned index in weights {actual_index}")
-        assert (returned_value[0].cpu()==real_value.cpu()).all()
+            returned_value = self.lut(x)
+            print(f"Normal, x is {x}, has shape {x.shape}")
+     #       indices = [int(y) + 4 for y in x]
+            indices = [int(y) for y in x[0]]
+
+            real_value = (self.weight)[indices]
+            print(f"real value has shape {real_value.shape}, is {real_value}")
+            print(f"returned_value[0] has shape {returned_value[0].shape}, is {returned_value[0]}")
+            actual_index = []
+            for index in range(len(returned_value[0])):
+                real = torch.all(returned_value[0][index].cpu() == self.weight.cpu(), dim=1).nonzero().item()
+                actual_index.append(real)
+            print(f"the returned index in weights {actual_index}")
+            assert (returned_value[0].cpu()==real_value.cpu()).all()
         if self.scale:
             return self.lut(x) * math.sqrt(self.embedding_dim)
         return self.lut(x)
