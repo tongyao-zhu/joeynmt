@@ -67,13 +67,17 @@ class Embeddings(nn.Module):
             assert (1==0)
         # if 1 in x and self.from_pretrained:
         #     print(f"Found padding in sentence {x}")
+        if self.from_pretrained:
+            print("Using pretrained")
         returned_value = self.lut(x)
-        print(f"x is {x}")
-        indices = [int(y) + 4 for y in x]
+        print(f"Normal, x is {x}, has shape {x.shape}")
+ #       indices = [int(y) + 4 for y in x]
         indices = [int(y)+4 for y in x[0]]
-
+        
         real_value = (self.weight)[indices]
-        assert (returned_value[0]==real_value).all()
+        print(f"real value has shape {real_value.shape}, is {real_value}")
+        print(f"returned_value[0] has shape {returned_value[0].shape}, is {returned_value[0]}")
+        assert (returned_value[0].cpu()==real_value.cpu()).all()
         if self.scale:
             return self.lut(x) * math.sqrt(self.embedding_dim)
         return self.lut(x)
