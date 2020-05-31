@@ -51,10 +51,10 @@ def load_data(data_cfg: dict) -> (Dataset, Dataset, Optional[Dataset],
 
     tok_fun = lambda s: list(s) if level == "char" else s.split()
 
-    src_field = data.Field(init_token=None, eos_token=None,
+    src_field = data.Field(init_token=BOS_TOKEN, eos_token=None,
                            pad_token=PAD_TOKEN, tokenize=tok_fun,
                            batch_first=True, lower=lowercase,
-                           unk_token=None,
+                           unk_token=UNK_TOKEN,
                            include_lengths=True)
 
     trg_field = data.Field(init_token=BOS_TOKEN, eos_token=EOS_TOKEN,
