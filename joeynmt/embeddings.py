@@ -70,8 +70,10 @@ class Embeddings(nn.Module):
         returned_value = self.lut(x)
         print(f"x is {x}")
         indices = [int(y) + 4 for y in x]
+        indices = [int(y)+4 for y in x[0]]
+
         real_value = (self.weight)[indices]
-        assert (returned_value==real_value).all()
+        assert (returned_value[0]==real_value).all()
         if self.scale:
             return self.lut(x) * math.sqrt(self.embedding_dim)
         return self.lut(x)
