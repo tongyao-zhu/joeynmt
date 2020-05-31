@@ -68,7 +68,8 @@ class Embeddings(nn.Module):
         # if 1 in x and self.from_pretrained:
         #     print(f"Found padding in sentence {x}")
         returned_value = self.lut(x)
-        indices = [int(y)+4 for y in x]
+        print(f"x is {x}")
+        indices = [int(y) + 4 for y in x]
         real_value = (self.weight)[indices]
         assert (returned_value==real_value).all()
         if self.scale:
