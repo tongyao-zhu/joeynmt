@@ -18,6 +18,7 @@ class Embeddings(nn.Module):
                  freeze: bool = False,
                  from_pretrained: bool = False,
                  pretrained_path: str = "",
+                 check_embedding = False,
                  **kwargs):
         """
         Create new embeddings for the vocabulary.
@@ -35,6 +36,7 @@ class Embeddings(nn.Module):
         self.scale = scale
         self.vocab_size = vocab_size
         self.from_pretrained = from_pretrained
+        self.check_embedding = check_embedding
         if from_pretrained:
             print("using pretrained model")
             self.weight = torch.load(pretrained_path)
@@ -67,9 +69,9 @@ class Embeddings(nn.Module):
             assert (1==0)
         # if 1 in x and self.from_pretrained:
         #     print(f"Found padding in sentence {x}")
-        if self.from_pretrained:
+        if self.check_embedding and self.from_pretrained:
             print("Using pretrained")
-        
+
             returned_value = self.lut(x)
             print(f"Normal, x is {x}, has shape {x.shape}")
      #       indices = [int(y) + 4 for y in x]
