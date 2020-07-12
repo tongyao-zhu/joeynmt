@@ -10,7 +10,7 @@ import torch
 # In[11]:
 
 
-features_tensor = torch.load("../f_features_tensor.pt")
+features_tensor = torch.load("../features_tensor.pt")
 
 
 # In[12]:
