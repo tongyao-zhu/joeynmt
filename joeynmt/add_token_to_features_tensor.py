@@ -10,8 +10,7 @@ import argparse
 
 def add_tokens(tensor_path, save_path):
 
-
-    features_tensor = torch.load("../f_features_tensor.pt")
+    features_tensor = torch.load(tensor_path)
     print(f"input features_tensor shape {features_tensor.shape}")
     print(f"the max value in feature_tensor is {features_tensor.max()}")
     print(f"the min value in feature tensor is {features_tensor.min()}")
