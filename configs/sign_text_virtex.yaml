@@ -1,0 +1,79 @@
+name: "sign_text_experiment"
+
+data:
+    src: "sign"
+    trg: "de"
+    train: "sign_text_data/sign_text_corpus_num/phoenix2014T.train"
+    dev: "sign_text_data/sign_text_corpus_num/phoenix2014T.dev"
+    test: "sign_text_data/sign_text_corpus_num/phoenix2014T.test"
+    level: "word"
+    lowercase: False
+    max_sent_length: 10000
+    src_voc_min_freq: 0
+    trg_voc_min_freq: 0
+    src_vocab: "sign_text_data/sign_image_vocab_num.txt"
+    #trg_vocab: "reverse_model/trg_vocab.txt"
+
+testing:
+    beam_size: 6
+    alpha: 0.9
+
+training:
+    random_seed: 42
+    optimizer: "adam"
+    adam_betas: [0.9,0.998]
+    learning_rate: 0.001
+    learning_rate_min: 0.000001
+    weight_decay: 0.001
+    clip_grad_norm: 1.0
+    batch_size: 32
+    batch_type: "sentence"
+    scheduling: "plateau"
+    patience: 8
+    decrease_factor: 0.7
+    early_stopping_metric: "eval_metric"
+    epochs: 50
+    validation_freq: 100
+    logging_freq: 160
+    eval_metric: "bleu"
+    model_dir: "sign_text_real"
+    overwrite: True
+    shuffle: True
+    use_cuda: True
+    max_output_length: 40
+    print_valid_sents: [0, 5, 9]
+    keep_last_ckpts: 2
+
+model:
+    initializer: "xavier"           # initializer for all trainable weights (xavier, zeros, normal, uniform)
+    init_gain: 1.0                  # gain for Xavier initializer (default: 1.0)
+    bias_initializer: "zeros"       # initializer for bias terms (xavier, zeros, normal, uniform)
+    embed_initializer: "xavier"     # initializer for embeddings (xavier, zeros, normal, uniform)
+    embed_init_gain: 1.0            # gain for Xavier initializer for embeddings (default: 1.0)
+    tied_embeddings: False          # tie src and trg embeddings, only applicable if vocabularies are the same, default: False
+    tied_softmax: False
+    encoder:
+        type: "transformer"
+        num_layers: 3
+        num_heads: 8
+        embeddings:
+            embedding_dim: 512
+            scale: False
+            freeze: True
+            from_pretrained: True
+            pretrained_path: "/diskC/tongyao/joeynmt/complete_tensor_virtex_v1.pt"
+        # typically ff_size = 4 x hidden_size
+        hidden_size: 512
+        ff_size: 4048
+        dropout: 0.1
+    decoder:
+        type: "transformer"
+        num_layers: 3
+        num_heads: 8
+        embeddings:
+            embedding_dim: 512
+            scale: True
+        # typically ff_size = 4 x hidden_size
+        hidden_size: 512
+        ff_size: 4048
+        dropout: 0.1
