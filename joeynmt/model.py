@@ -94,6 +94,7 @@ class Model(nn.Module):
         """
         # print(f"in encode step, current input has shape {src.shape}")
         src = self.src_embed(src)
+        src = self.src_linear(src)
         # print(f"after embedding, it has shape {src.shape}")
         src=src.permute([0,2,1])
         src = self.src_batch_norm(src)
