@@ -61,7 +61,7 @@ model:
             scale: False
             freeze: True
             from_pretrained: True
-            pretrained_path: "/diskC/tongyao/joeynmt/complete_tensor_virtex_v1.pt"
+            pretrained_path: "/diskC/tongyao/virtex/features_phoenix/complete_tensor_virtex_v1.pt"
         # typically ff_size = 4 x hidden_size
         hidden_size: 512
         ff_size: 4048
